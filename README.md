@@ -37,3 +37,22 @@ extension String {
     }
 }
 ```
+### Fonts
+If app uses custom fonts then they should be moved to separate enum with future access through `convenience init`
+
+**Preferred**:
+```swift
+enum CustomFont: String {
+    case productSansBold = "ProductSans-Bold",
+    smartKid = "SmartKid",
+    nanumPenScript = "NanumPen",
+    productSansRegular = "ProductSans-Regular",
+    shadowIntoLightRegular = "ShadowsIntoLightTwo-Regular"
+}
+
+extension UIFont {
+    convenience init(font: CustomFont, with size: CGFloat) {
+        self.init(name: font.rawValue, size: size)!
+    }
+}
+```
