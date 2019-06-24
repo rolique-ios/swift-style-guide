@@ -56,3 +56,27 @@ extension UIFont {
     }
 }
 ```
+
+### Constants
+For constants we using static computed properties over stored static properties to reduce RAM usage. If constants belong only to the distinct class, it should be moved to private `struct`:
+
+**Preferred**:
+```swift
+private struct Constants {
+    static var playerWidth: CGFloat { return 100 }
+    static var trophySize: CGSize { return CGSize(width: 16, height: 18) }
+}
+
+final class ResultViewController: UIViewController {
+}
+```
+Otherwise, if it belongs to more than 1 class it should be moved to `GlobalConsntants`.
+
+**Preferred**:
+```swift
+struct GlobalConstants {
+    struct Game {
+        static var maxPlayersCount: Int { return 12 }
+    }
+}
+```
