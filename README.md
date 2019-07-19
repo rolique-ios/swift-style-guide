@@ -37,6 +37,7 @@ extension String {
     }
 }
 ```
+
 ### Fonts
 If app uses custom fonts then they should be moved to separate enum with future access through `convenience init`
 
@@ -79,4 +80,117 @@ struct GlobalConstants {
         static var maxPlayersCount: Int { return 12 }
     }
 }
+```
+
+### @IBAction
+@IBAction method name should point out on `UIControl.Event` which triggers it. 
+
+**Preferred**:
+```swift
+    self.nextRoundButton.addTarget(self, action: #selector(startNextRoundTouchUpInside(sender:)), for: .touchUpInside)
+    @objc func startNextRoundTouchUpInside(sender: UIButton) {}
+
+    @IBAction func nameTextFieldEditingChanged(sender: UITextField) {}
+```
+
+### Extensions
+All protocols confirmations, private methods, IBActions methods should be moved to separate extensions, if it's possible (In current version of Swift conformance of generic class to `@objc` protocol cannot be in an extension), and divided with `// MARK: - `
+
+**Preferred**:
+```swift
+// MARK: - UITableViewDelegate
+extension ResultViewController: UITableViewDelegate {
+    
+}
+
+// MARK: - Private
+private extension ResultViewController {
+    func doSmthSpecific() {}
+}
+
+// MARK: - Actions
+private extension ResultViewController {
+    @IBAction func doneTouchUpInside(sender: UIButton) {}
+}
+```
+
+### Access modifiers
+Always use the lowest access modifier that's possible, class shouldn't expose any implementation details except his interface. Never explicitly use `internal` (everything is internal by default). `private` property should be declared on the very top then `fileprivate` -> `internal` -> `public` -> `open`. Use access control as the leading property specifier. The only things that should come before access control are the `static` specifier or attributes such as `@IBAction`, `@IBOutlet` and `@discardableResult`.
+
+**Preferred**:
+```swift
+final class A {
+    private lazy var counter = 0
+    fileprivate lazy var message = ""
+    var onSuccess: (() -> Void)?
+}
+```
+
+## Control Flow
+Prefer the `for-in` style of `for` loop over the `while-condition-increment` style.
+
+**Preferred**:
+```swift
+for _ in 0..<3 {
+  print("Hello three times")
+}
+
+for (index, person) in attendeeList.enumerated() {
+  print("\(person) is at position #\(index)")
+}
+
+for index in stride(from: 0, to: items.count, by: 2) {
+  print(index)
+}
+
+for index in (0...3).reversed() {
+  print(index)
+}
+```
+
+**Not Preferred**:
+```swift
+var i = 0
+while i < 3 {
+  print("Hello three times")
+  i += 1
+}
+
+
+var i = 0
+while i < attendeeList.count {
+  let person = attendeeList[i]
+  print("\(person) is at position #\(i)")
+  i += 1
+}
+```
+
+### Minimal Imports
+Import only the modules a source file requires. For example, don't import `UIKit` when importing `Foundation` will suffice. Likewise, don't import `Foundation` if you must import `UIKit`.
+
+**Preferred**:
+```
+import UIKit
+var view: UIView
+var deviceModels: [String]
+```
+
+**Preferred**:
+```
+import Foundation
+var deviceModels: [String]
+```
+
+**Not Preferred**:
+```
+import UIKit
+import Foundation
+var view: UIView
+var deviceModels: [String]
+```
+
+**Not Preferred**:
+```
+import UIKit
+var deviceModels: [String]
 ```
