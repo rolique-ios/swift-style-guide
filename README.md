@@ -1,5 +1,58 @@
 # The Official Rolique Swift & iOS Style Guide.
 
+### Defer
+When method has multiple exit point and there is logic that must be called before every `return` or you want to emphasize that it's important to call something before exit(`.unclock()`, `.endUpdates()`) don't forget to use `defer` statement. `defer` should be always declared on the top of the function.
+**Preferred**:
+```swift
+extension NSLocking {
+    func `do`<Result>(_ action: () -> Result) -> Result {
+        self.lock()
+        defer { self.unlock() }
+        return action()
+    }
+}
+
+func process() {
+    defer { reset() }
+    
+    if condition1 {
+        prepare()
+        showScreen1()
+        return
+    }
+    
+    if condition2 {
+        prepare()
+        showScreen2()
+        return
+    }
+}
+```
+
+**Not Preferred**:
+```swift
+func writeToDB() {
+    lock.lock()
+    // doing smth
+    lock.unlock()
+}
+
+func process() {
+    if condition1 {
+        prepare()
+        showScreen1()
+        reset()
+        return
+    }
+    
+    if condition2 {
+        prepare()
+        showScreen2()
+        reset()
+        return
+    }
+}
+```
 ### Localization
 For localization we using separate file which contains all strings which are grouped by screens. Strings should be set only from code.
 
