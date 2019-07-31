@@ -1,6 +1,6 @@
 # The Official Rolique Swift & iOS Style Guide.
 
-### Defer
+## Defer
 When method has multiple exit point and there is logic that must be called before every `return` or you want to emphasize that it's important to call something before exit(`.unclock()`, `.endUpdates()`) don't forget to use `defer` statement. `defer` should be always declared on the top of the function.
 **Preferred**:
 ```swift
@@ -53,7 +53,8 @@ func process() {
     }
 }
 ```
-### Localization
+
+## Localization
 For localization we using separate file which contains all strings which are grouped by screens. Strings should be set only from code.
 
 **Preferred**:
@@ -91,7 +92,7 @@ extension String {
 }
 ```
 
-### Fonts
+## Fonts
 If app uses custom fonts then they should be moved to separate enum with future access through `convenience init`
 
 **Preferred**:
@@ -111,7 +112,7 @@ extension UIFont {
 }
 ```
 
-### Constants
+## Constants
 For constants we using static computed properties over stored static properties to reduce RAM usage. If constants belong only to the distinct class, it should be moved to private `struct`:
 
 **Preferred**:
@@ -135,7 +136,7 @@ struct GlobalConstants {
 }
 ```
 
-### @IBAction
+## @IBAction
 @IBAction method name should point out on `UIControl.Event` which triggers it. 
 
 **Preferred**:
@@ -146,7 +147,7 @@ struct GlobalConstants {
     @IBAction func nameTextFieldEditingChanged(sender: UITextField) {}
 ```
 
-### Extensions
+## Extensions
 All protocols confirmations, private methods, IBActions methods should be moved to separate extensions, if it's possible (In current version of Swift conformance of generic class to `@objc` protocol cannot be in an extension), and divided with `// MARK: - `
 
 **Preferred**:
@@ -167,7 +168,7 @@ private extension ResultViewController {
 }
 ```
 
-### Access modifiers
+## Access modifiers
 Always use the lowest access modifier that's possible, class shouldn't expose any implementation details except his interface. Never explicitly use `internal` (everything is internal by default). `private` property should be declared on the very top then `fileprivate` -> `internal` -> `public` -> `open`. Use access control as the leading property specifier. The only things that should come before access control are the `static` specifier or attributes such as `@IBAction`, `@IBOutlet` and `@discardableResult`.
 
 **Preferred**:
@@ -218,7 +219,7 @@ while i < attendeeList.count {
 }
 ```
 
-### Minimal Imports
+## Minimal Imports
 Import only the modules a source file requires. For example, don't import `UIKit` when importing `Foundation` will suffice. Likewise, don't import `Foundation` if you must import `UIKit`.
 
 **Preferred**:
